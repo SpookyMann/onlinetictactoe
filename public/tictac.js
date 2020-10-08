@@ -5,19 +5,32 @@ let idNames = ["one", "two", "three", "four", "five", "six",
                   "seven", "eight", "nine"];
 
 // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  var firebaseConfig = {
-    apiKey: "AIzaSyAzOGjdQZNXSx00x9mtP8U8X95Ttkm99Jk",
-    authDomain: "online-tic-tac-toe-9f63b.firebaseapp.com",
-    databaseURL: "https://online-tic-tac-toe-9f63b.firebaseio.com",
-    projectId: "online-tic-tac-toe-9f63b",
-    storageBucket: "online-tic-tac-toe-9f63b.appspot.com",
-    messagingSenderId: "211282832628",
-    appId: "1:211282832628:web:72fcbba0c46f6ae17b42a1",
-    measurementId: "G-3MS9ELCCT5"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+var firebaseConfig = {
+  apiKey: "AIzaSyAzOGjdQZNXSx00x9mtP8U8X95Ttkm99Jk",
+  authDomain: "online-tic-tac-toe-9f63b.firebaseapp.com",
+  databaseURL: "https://online-tic-tac-toe-9f63b.firebaseio.com",
+  projectId: "online-tic-tac-toe-9f63b",
+  storageBucket: "online-tic-tac-toe-9f63b.appspot.com",
+  messagingSenderId: "211282832628",
+  appId: "1:211282832628:web:cc130281269f97a07b42a1",
+  measurementId: "G-RBH1HNXTMP"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+const player1 = firebase.database().ref('p1');
+
+var turns = firebase.database().ref('turns');
+
+function setGame() {
+  player1.once('value', function(data){
+    const online = data.val();
+    if(online == 1){
+      document.getElementById("gameStatus").innerHTML = "Player 1 is online";
+    }
+  });
+}
 
 // reset board and all variables
 function newGame() {
@@ -38,6 +51,8 @@ function newGame() {
 // take player turn
 function playerTakesTurn(e) {
 
+if(currentPlayer == "X"){
+  turns.once('value', function(data){
   if (e.innerHTML == "") {
     e.innerHTML = currentPlayer;
     checkGameStatus();
@@ -50,6 +65,10 @@ function playerTakesTurn(e) {
   if (gameStatus != ""){
     showLightBox(gameStatus, "Game Over.");
   }
+});
+} else {
+  showLightBox("It's not your turn!", "Please wait...");
+}
 
 } // playerTakesTurn
 
